@@ -3,7 +3,8 @@ val h2_version: String by project
 val koin_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
-
+val hikaricp_version: String by project
+val mysql_jdbc_version: String by project
 plugins {
     kotlin("jvm") version "2.3.0"
     id("io.ktor.plugin") version "3.4.2"
@@ -31,9 +32,6 @@ dependencies {
     implementation("io.ktor:ktor-server-call-logging")
     implementation("io.ktor:ktor-server-content-negotiation")
     implementation("io.ktor:ktor-serialization-kotlinx-json")
-    implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
-    implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
-    implementation("com.h2database:h2:$h2_version")
     implementation("io.insert-koin:koin-ktor:$koin_version")
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
     implementation("io.ktor:ktor-server-websockets")
@@ -42,4 +40,11 @@ dependencies {
     implementation("io.ktor:ktor-server-config-yaml")
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+
+    //database
+    implementation("org.jetbrains.exposed:exposed-core:${exposed_version}")
+    implementation("org.jetbrains.exposed:exposed-jdbc:${exposed_version}")
+    implementation("org.jetbrains.exposed:exposed-dao:${exposed_version}")
+    implementation("mysql:mysql-connector-java:${mysql_jdbc_version}")
+    implementation("com.zaxxer:HikariCP:${hikaricp_version}")
 }

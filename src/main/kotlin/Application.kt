@@ -1,5 +1,12 @@
 package com.example
 
+import com.example.core.plugins.configureFrameworks
+import com.example.core.plugins.configureHTTP
+import com.example.core.plugins.configureMonitoring
+import com.example.core.plugins.configureRouting
+import com.example.core.plugins.configureSecurity
+import com.example.core.plugins.configureSerialization
+import com.example.core.plugins.configureSockets
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
@@ -7,12 +14,16 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
+
+    configureFrameworks()
+    //cofigureDatabase()
     configureHTTP()
-    configureSecurity()
     configureMonitoring()
     configureSerialization()
-    configureDatabases()
-    configureFrameworks()
+    configureSecurity()
     configureSockets()
     configureRouting()
+
+
+
 }
