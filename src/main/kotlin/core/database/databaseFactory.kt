@@ -1,5 +1,6 @@
 package com.example.core.database
 
+import com.zaxxer.hikari.HikariConfig
 import javax.sql.DataSource
 
 class DatabaseFactory(){
@@ -7,7 +8,8 @@ class DatabaseFactory(){
    private lateinit var dataSource: DataSource
 
     fun init (){
-        val config:Hi
+        val config: HikariConfig = HikariConfig()
+
     }
 
 }

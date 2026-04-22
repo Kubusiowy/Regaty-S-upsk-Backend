@@ -8,6 +8,12 @@ services:
     environment:
       APP_PORT: ${APP_PORT}
 
+      JWT_DOMAIN: ${JWT_DOMAIN}
+      JWT_AUDIENCE: ${JWT_AUDIENCE}
+      JWT_REALM: ${JWT_REALM}
+      JWT_SECRET: ${JWT_SECRET}
+
+
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_PORT: ${MYSQL_PORT}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
