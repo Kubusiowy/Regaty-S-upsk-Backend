@@ -28,12 +28,10 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    networks:
-      - regaty_Ktor
 
   mysql:
     image: mysql:8.2
-    container_name: db_mysql
+    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -45,21 +43,13 @@ services:
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD --silent"]
       timeout: 20s
       retries: 10
-    networks:
-      - regaty_Ktor
 
   redis:
     image: redis:7.2-alpine
-    container_name: db_redis
+    container_name: redis
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       timeout: 20s
       retries: 10
-    networks:
-      - regaty_Ktor
 volumes:
   mysql_data:
-
-networks:
-  regaty_Ktor:
-    driver: bridge
