@@ -2,9 +2,7 @@ package com.example.core.database
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import io.ktor.server.application.Application
 import io.ktor.server.config.ApplicationConfig
-import io.ktor.server.config.property
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.flywaydb.core.Flyway
@@ -43,7 +41,7 @@ class DatabaseFactory(
 
         Flyway.configure()
             .dataSource(dataSource)
-            .locations("classpath:/db/mysql/")
+            .locations("classpath:/db/migration")
             .load()
             .migrate()
 

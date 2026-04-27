@@ -1,5 +1,6 @@
 package com.example
 
+import com.example.core.database.databaseInit
 import com.example.core.plugins.configureFrameworks
 import com.example.core.plugins.configureHTTP
 import com.example.core.plugins.configureMonitoring
@@ -16,7 +17,7 @@ fun main(args: Array<String>) {
 fun Application.module() {
 
     configureFrameworks()
-    //cofigureDatabase()
+    databaseInit()
     configureHTTP()
     configureMonitoring()
     configureSerialization()

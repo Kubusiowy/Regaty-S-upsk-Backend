@@ -47,7 +47,9 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:${exposed_version}")
     implementation("org.jetbrains.exposed:exposed-dao:${exposed_version}")
 
-    implementation("mysql:mysql-connector-java:${mysql_jdbc_version}")
+    implementation("com.mysql:mysql-connector-j:${mysql_jdbc_version}")
     implementation("com.zaxxer:HikariCP:${hikaricp_version}")
+
     implementation("org.flywaydb:flyway-core:${flyway_version}")
+    implementation("org.flywaydb:flyway-mysql:${flyway_version}")
 }
