@@ -9,3 +9,15 @@ jwt:
   audience: ${JWT_AUDIENCE}
   realm: ${JWT_REALM}
   secret: ${JWT_SECRET}
+
+mysql:
+  host: ${MYSQL_HOST}
+  port: ${MYSQL_PORT}
+  database: ${MYSQL_DATABASE}
+  user: ${MYSQL_USER}
+  pass: ${MYSQL_PASSWORD}
+
+redis:
+  host: ${REDIS_HOST}
+  port: ${REDIS_PORT}
+

@@ -5,6 +5,7 @@ val kotlin_version: String by project
 val logback_version: String by project
 val hikaricp_version: String by project
 val mysql_jdbc_version: String by project
+val flyway_version: String by project
 plugins {
     kotlin("jvm") version "2.3.0"
     id("io.ktor.plugin") version "3.4.2"
@@ -45,6 +46,8 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:${exposed_version}")
     implementation("org.jetbrains.exposed:exposed-jdbc:${exposed_version}")
     implementation("org.jetbrains.exposed:exposed-dao:${exposed_version}")
+
     implementation("mysql:mysql-connector-java:${mysql_jdbc_version}")
     implementation("com.zaxxer:HikariCP:${hikaricp_version}")
+    implementation("org.flywaydb:flyway-core:${flyway_version}")
 }
