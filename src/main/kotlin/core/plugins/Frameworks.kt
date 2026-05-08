@@ -13,7 +13,8 @@ fun Application.configureFrameworks() {
         modules(module {
             single { environment.config }
         },
-            databaseModule
+            databaseModule,
+
             )
     }
 }

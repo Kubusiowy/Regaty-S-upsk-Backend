@@ -23,6 +23,9 @@ kotlin {
     jvmToolchain(21)
 }
 
+tasks.shadowJar {
+    mergeServiceFiles()
+}
 dependencies {
     implementation("io.ktor:ktor-server-cors")
     implementation("io.ktor:ktor-server-core")
@@ -46,6 +49,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:${exposed_version}")
     implementation("org.jetbrains.exposed:exposed-jdbc:${exposed_version}")
     implementation("org.jetbrains.exposed:exposed-dao:${exposed_version}")
+    implementation("org.jetbrains.exposed:exposed-java-time:${exposed_version}")
 
     implementation("com.mysql:mysql-connector-j:${mysql_jdbc_version}")
     implementation("com.zaxxer:HikariCP:${hikaricp_version}")

@@ -41,7 +41,7 @@ class DatabaseFactory(
 
         Flyway.configure()
             .dataSource(dataSource)
-            .locations("classpath:/db/migration")
+            .locations("classpath:db/migration")
             .load()
             .migrate()
 
