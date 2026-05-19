@@ -8,21 +8,27 @@ import com.example.core.plugins.configureRouting
 import com.example.core.plugins.configureSecurity
 import com.example.core.plugins.configureSerialization
 import com.example.core.plugins.configureSockets
+import com.example.core.plugins.configureStatusPages
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain.main(args)
 }
 
-fun Application.module() {
+fun Application.module(
+    enableDatabase: Boolean = true
+) {
 
     configureFrameworks()
-    databaseInit()
+    if(enableDatabase) {
+        databaseInit()
+    }
     configureHTTP()
     configureMonitoring()
     configureSerialization()
     configureSecurity()
     configureSockets()
+    configureStatusPages()
     configureRouting()
 
 
