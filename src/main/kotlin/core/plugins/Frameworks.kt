@@ -1,7 +1,7 @@
 package com.example.core.plugins
 
-import com.example.core.database.databaseModule
-import io.ktor.http.parametersOf
+import com.example.core.database.koin.databaseModule
+import com.example.core.plugins.security.koin.securityModule
 import io.ktor.server.application.*
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
@@ -14,7 +14,7 @@ fun Application.configureFrameworks() {
             single { environment.config }
         },
             databaseModule,
-
+            securityModule,
             )
     }
 }

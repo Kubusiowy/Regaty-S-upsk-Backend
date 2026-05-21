@@ -2,28 +2,26 @@ package com.example.core.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.example.core.plugins.security.JwtService
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
+import io.ktor.server.config.ApplicationConfig
+import org.koin.ktor.ext.inject
 
 fun Application.configureSecurity() {
-    // Please read the jwt property from the config file if you are using EngineMain
-    val jwtAudience = "jwt-audience"
-    val jwtDomain = "https://jwt-provider-domain/"
-    val jwtRealm = "ktor sample app"
-    val jwtSecret = "secret"
+
+    val jwtRealm = environment.config.property("jwt.realm").getString()
+    val jwtService by inject<JwtService>()
     authentication {
         jwt {
             realm = jwtRealm
-            verifier(
-                JWT
-                    .require(Algorithm.HMAC256(jwtSecret))
-                    .withAudience(jwtAudience)
-                    .withIssuer(jwtDomain)
-                    .build()
-            )
+            verifier(jwtService.verifier)
             validate { credential ->
-                if (credential.payload.audience.contains(jwtAudience)) JWTPrincipal(credential.payload) else null
+                val userId = credential.payload.getClaim("userId").asString()
+                val type = credential.payload.getClaim("type").asString()
+
+                if(userId == null || type.isEmpty()) null else JWTPrincipal(credential.payload)
             }
         }
     }
