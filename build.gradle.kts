@@ -6,6 +6,7 @@ val logback_version: String by project
 val hikaricp_version: String by project
 val mysql_jdbc_version: String by project
 val flyway_version: String by project
+val bcrypt_version: String by project
 plugins {
     kotlin("jvm") version "2.3.0"
     id("io.ktor.plugin") version "3.4.2"
@@ -56,4 +57,6 @@ dependencies {
 
     implementation("org.flywaydb:flyway-core:${flyway_version}")
     implementation("org.flywaydb:flyway-mysql:${flyway_version}")
+
+    implementation("org.mindrot:jbcrypt:${bcrypt_version}")
 }

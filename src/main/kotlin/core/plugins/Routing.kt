@@ -2,6 +2,7 @@ package com.example.core.plugins
 
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.authenticate
 import io.ktor.server.http.content.defaultResource
 import io.ktor.server.http.content.staticResources
 import io.ktor.server.plugins.statuspages.*
@@ -14,6 +15,10 @@ fun Application.configureRouting() {
         staticResources("/", "static"){
             default("index.html")
         }
+        staticResources("/regaty", "regaty")
 
+        authenticate("auth-jwt") {
+
+        }
     }
 }
