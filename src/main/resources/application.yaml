@@ -21,3 +21,8 @@ redis:
   host: ${REDIS_HOST}
   port: ${REDIS_PORT}
 
+admin:
+  login: ${ADMIN_LOGIN}
+  rawPass: ${ADMIN_RAW_PASS}
+
+
