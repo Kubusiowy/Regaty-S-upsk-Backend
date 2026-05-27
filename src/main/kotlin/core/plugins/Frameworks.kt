@@ -2,6 +2,7 @@ package com.example.core.plugins
 
 import com.example.core.database.koin.databaseModule
 import com.example.core.plugins.security.koin.securityModule
+import com.example.features.auth.di.authModule
 import io.ktor.server.application.*
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
@@ -15,6 +16,7 @@ fun Application.configureFrameworks() {
         },
             databaseModule,
             securityModule,
+            authModule,
             )
     }
 }

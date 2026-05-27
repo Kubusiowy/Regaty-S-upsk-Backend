@@ -1,6 +1,7 @@
 package com.example.core.plugins
 
 import com.example.features.admin.routes.adminRoutes
+import com.example.features.auth.routes.authRoutes
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.authenticate
@@ -19,6 +20,8 @@ fun Application.configureRouting() {
         staticResources("/regaty", "regaty")
 
         adminRoutes()
+
+        authRoutes()
 
     }
 }
