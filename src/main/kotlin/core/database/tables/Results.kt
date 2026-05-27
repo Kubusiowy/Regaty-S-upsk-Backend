@@ -4,7 +4,7 @@ import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 
 object Results : Table("results") {
-    val id = uuid("id")
+    val id = char("id", 36)
 
     val schoolId = reference(
         name = "school_id",

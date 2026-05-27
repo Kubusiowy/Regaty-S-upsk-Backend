@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.javatime.CurrentTimestamp
 import org.jetbrains.exposed.sql.javatime.timestamp
 
 object RefreshToken : Table("refreshToken") {
-    val id = uuid("id")
+    val id = char("id", 36)
 
     val userId = reference(
         name = "user_id",
