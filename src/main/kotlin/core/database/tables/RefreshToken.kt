@@ -17,7 +17,7 @@ object RefreshToken : Table("refreshToken") {
     val tokenHash = varchar("token_hash", 255)
     val expiresAt = timestamp("expires_at")
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
-    val revokedAt = bool("revoked").default(false).nullable()
+    val revoked = bool("revoked").default(false).nullable()
 
     override val primaryKey = PrimaryKey(id)
 

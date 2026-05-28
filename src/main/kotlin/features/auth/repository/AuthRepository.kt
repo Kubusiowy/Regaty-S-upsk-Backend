@@ -11,6 +11,7 @@ interface AuthRepository {
     suspend fun findAdminByLogin(login: String): AdminModel?
 
     suspend fun saveRefreshToken(
+        id: UUID,
         adminId: UUID,
         tokenHash:String,
         expiresAt: Instant
