@@ -17,9 +17,10 @@ fun Application.configureRouting() {
         staticResources("/", "static"){
             default("index.html")
         }
-        staticResources("/regaty", "regaty")
 
-        adminRoutes()
+        authenticate("auth-jwt") {
+            adminRoutes()
+        }
 
         authRoutes()
 
