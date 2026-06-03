@@ -4,10 +4,14 @@ import com.example.core.plugins.exception.NotFoundException
 import com.example.core.plugins.exception.UnauthorizedException
 import com.example.core.plugins.security.JwtService
 import com.example.core.util.hashing.PassHasher
+import com.example.core.util.sha.sha256
 import com.example.features.auth.domain.DTO.Request.AdminLoginRequest
-import com.example.features.auth.domain.DTO.Response.LoginResponse
 import com.example.features.auth.domain.model.LoginResult
 import com.example.features.auth.repository.AuthRepository
+import java.time.Instant
+import java.time.temporal.ChronoUnit
+import java.util.UUID
+
 
 class AuthServiceImpl(
     private val authRepo: AuthRepository,
@@ -20,7 +24,7 @@ class AuthServiceImpl(
      adminLoginRequest: AdminLoginRequest
     ): LoginResult {
 
-      val admin = authRepo.findAdminByLogin(adminLoginRequest.login) ?: throw NotFoundException("Admin not Found")
+      val admin = authRepo.findAdminByLogin(adminLoginRequest.login) ?: throw UnauthorizedException("Unauthorized")
 
         val correct = passHasher.verifyPassword(adminLoginRequest.rawPassword, admin.passHash)
 
@@ -30,6 +34,12 @@ class AuthServiceImpl(
 
         val accessToken = jwtService.generateAccessToken(admin.adminId.toString())
         val refreshToken = jwtService.generateRefreshToken(admin.adminId.toString())
+        authRepo.saveRefreshToken(
+            id = UUID.randomUUID(),
+            adminId = admin.adminId,
+            tokenHash = refreshToken.sha256(),
+            expiresAt = Instant.now().plus(7, ChronoUnit.DAYS)
+        )
 
         return LoginResult(
             accessToken = accessToken,

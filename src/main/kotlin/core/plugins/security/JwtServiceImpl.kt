@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.server.config.ApplicationConfig
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.Date
 
 class JwtServiceImpl(
@@ -22,7 +24,7 @@ class JwtServiceImpl(
             .withAudience(jwtAudience)
             .withClaim("userId",userId)
             .withClaim("type", "refresh")
-            .withExpiresAt(Date(System.currentTimeMillis() + 7L * 24 * 60 * 60 * 1000))
+            .withExpiresAt(Instant.now().plus(7, ChronoUnit.DAYS))
             .sign(algorithm)
     }
 
