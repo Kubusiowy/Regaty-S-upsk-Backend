@@ -2,16 +2,16 @@ package com.example.core.plugins
 
 import com.example.features.admin.routes.adminRoutes
 import com.example.features.auth.routes.authRoutes
-import io.ktor.http.*
+import com.example.features.auth.service.AuthService
 import io.ktor.server.application.*
 import io.ktor.server.auth.authenticate
-import io.ktor.server.http.content.defaultResource
 import io.ktor.server.http.content.staticResources
-import io.ktor.server.plugins.statuspages.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 
 fun Application.configureRouting() {
+
+    val authService by inject<AuthService>()
 
     routing {
         staticResources("/", "static"){
@@ -22,7 +22,7 @@ fun Application.configureRouting() {
             adminRoutes()
         }
 
-        authRoutes()
+        authRoutes(authService)
 
     }
 }

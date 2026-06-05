@@ -1,17 +1,17 @@
 package com.example.features.auth.routes
 
 import com.example.features.auth.domain.DTO.Request.AdminLoginRequest
+import com.example.features.auth.domain.DTO.Request.RefreshRequest
 import com.example.features.auth.domain.DTO.Response.LoginResponse
+import com.example.features.auth.domain.DTO.Response.RefreshResponse
 import com.example.features.auth.service.AuthService
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
-import org.koin.ktor.ext.inject
 
-fun Route.authRoutes() {
+fun Route.authRoutes(authService: AuthService) {
 
-    val authService by inject<AuthService>()
 
     post("/auth/login") {
 
@@ -23,6 +23,16 @@ fun Route.authRoutes() {
                 refreshToken = result.refreshToken,
             )
         )
+    }
+
+    post("/auth/refresh") {
+        val request = call.receive<RefreshRequest>()
+        val result = authService.refreshAccessToken(request.refreshToken)
+
+        val refreshResponse: RefreshResponse = RefreshResponse(
+            accessToken = result.accessToken,
+        )
+        call.respond(refreshResponse)
     }
 
 }

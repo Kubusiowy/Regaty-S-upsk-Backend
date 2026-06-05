@@ -18,7 +18,7 @@ fun Application.configureSecurity() {
                 val userId = credential.payload.getClaim("userId").asString()
                 val type = credential.payload.getClaim("type").asString()
 
-                if(userId == null || type.isEmpty()) null else JWTPrincipal(credential.payload)
+                if(userId != null && type == "access" ) null else JWTPrincipal(credential.payload)
             }
         }
     }

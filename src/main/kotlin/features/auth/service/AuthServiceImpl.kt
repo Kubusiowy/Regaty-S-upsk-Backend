@@ -1,6 +1,5 @@
 package com.example.features.auth.service
 
-import com.example.core.plugins.exception.NotFoundException
 import com.example.core.plugins.exception.UnauthorizedException
 import com.example.core.plugins.security.JwtService
 import com.example.core.util.hashing.PassHasher
@@ -46,6 +45,29 @@ class AuthServiceImpl(
             refreshToken = refreshToken,
             adminId = admin.adminId
         )
+
+    }
+
+    override suspend fun refreshAccessToken(rawRefreshToken: String): LoginResult {
+        val decoded = jwtService.verifyRefreshToken(rawRefreshToken)
+
+        val userId = decoded.getClaim("userId").asString() ?: throw UnauthorizedException("Unauthorized")
+
+        val savedRefreshToken = authRepo.findRefreshTokenByHash(rawRefreshToken.sha256())
+        ?: throw UnauthorizedException("Invalid refresh token")
+
+        if(savedRefreshToken.userId.toString() != userId) throw UnauthorizedException("Invalid user id")
+        if(savedRefreshToken.revoked == true) throw UnauthorizedException("Invalid token")
+
+        if(savedRefreshToken.expiresAt.isBefore(Instant.now())) throw UnauthorizedException("Invalid token")
+        val newAccessToken = jwtService.generateAccessToken(userId)
+
+        return LoginResult(
+            accessToken = newAccessToken,
+            refreshToken = rawRefreshToken,
+            adminId = savedRefreshToken.userId
+        )
+
 
     }
 

@@ -7,6 +7,7 @@ import com.example.features.auth.service.AuthServiceImpl
 import org.koin.dsl.module
 
 val authModule = module{
+
     single<AuthRepository> { AuthRepositoryImpl() }
     single<AuthService> { AuthServiceImpl(
         authRepo = get(),

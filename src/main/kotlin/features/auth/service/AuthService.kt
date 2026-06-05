@@ -6,6 +6,6 @@ import com.example.features.auth.domain.model.LoginResult
 interface AuthService {
 
     suspend fun login(adminLoginRequest: AdminLoginRequest): LoginResult
-
+    suspend fun refreshAccessToken(rawRefreshToken: String):LoginResult
 
 }
