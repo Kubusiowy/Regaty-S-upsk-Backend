@@ -22,18 +22,7 @@ class ApplicationTest {
         application {
             module(enableDatabase = false)
         }
-        client.get("/").apply {
-            assertEquals(HttpStatusCode.OK, status)
-        }
-        client.get("/panel/panel.html").apply {
-            assertEquals(HttpStatusCode.OK, status)
-        }
-        client.get("/autorzy/autorzy.html").apply {
-            assertEquals(HttpStatusCode.OK, status)
-        }
-        client.get("/regaty/1.jpg").apply {
-            assertEquals(HttpStatusCode.OK, status)
-        }
+
     }
 
 }

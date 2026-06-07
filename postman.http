@@ -1,9 +1,11 @@
+@host = http://localhost:8080
+
 ### GET request to example server
 GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
 ### Login admina
-POST http://localhost:8080/auth/login
+POST {{host}}/auth/login
 Content-Type: application/json
 
 {
@@ -11,12 +13,23 @@ Content-Type: application/json
   "rawPassword": "ZAQ!2wsx"
 }
 
+> {%
+    client.global.set(
+        "accessToken",
+        response.body.accessToken
+    )
+
+    client.global.set(
+        "refreshToken",
+        response.body.refreshToken
+    )
+%}
 
 ### Refresh access tokena
-POST http://localhost:8080/auth/refresh
+POST {{host}}/auth/refresh
 Content-Type: application/json
 
 {
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovLzE5NC4yOC4yMjIuMjg6ODA4MCIsImF1ZCI6Imp3dC1hdWRpZW5jZS1jbGllbnQiLCJ1c2VySWQiOiIzNzZhMjA4Mi0wOTI1LTQzNjMtYmQyNS00NmNkZWFjOWY2ZDgiLCJ0eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4MTI5NjkyMX0.GolOiSxGLN46AKzsoYHs0b9vcLmL-q81Y6wdXSjsZRQ"
+  "refreshToken": "{{refreshToken}}"
 }
 
