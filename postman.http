@@ -33,3 +33,15 @@ Content-Type: application/json
   "refreshToken": "{{refreshToken}}"
 }
 
+> {%
+    client.global.set(
+        "accessToken",
+        response.body.accessToken
+    )
+ %}
+
+### Test secured endPoint with jwt
+
+GET {{host}}/scores/admin
+Authorization: Bearer {{accessToken}}
+

@@ -16,8 +16,9 @@ object Results : Table("results") {
         name = "category_id",
         refColumn = Categories.id,
         onDelete = ReferenceOption.CASCADE,
-    ).nullable()
+    )
 
+    val timeMs = long("time_ms")
 
     override val primaryKey = PrimaryKey(id)
 
