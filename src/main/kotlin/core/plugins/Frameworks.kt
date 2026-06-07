@@ -4,6 +4,9 @@ import com.example.core.database.koin.databaseModule
 import com.example.core.plugins.security.koin.securityModule
 import com.example.core.util.koin.utilModule
 import com.example.features.auth.di.authModule
+import com.example.features.categories.koin.categoriesModule
+import com.example.features.schools.koin.schoolsModule
+import com.example.features.scores.koin.scoresModule
 import io.ktor.server.application.*
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
@@ -19,6 +22,9 @@ fun Application.configureFrameworks() {
             securityModule,
             authModule,
             utilModule,
+            scoresModule,
+            schoolsModule,
+            categoriesModule,
             )
     }
 }

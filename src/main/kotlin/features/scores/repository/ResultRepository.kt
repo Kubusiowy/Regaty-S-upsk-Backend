@@ -12,7 +12,7 @@ interface ResultRepository {
         timeMs: Long,
     ): ResultModel
 
-    suspend fun getAllResults(): List<ResultResponse>
+    suspend fun getAllResults(): List<ResultModel>
 
     suspend fun delete(id: UUID)
 }
