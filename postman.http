@@ -40,8 +40,32 @@ Content-Type: application/json
     )
  %}
 
-### Test secured endPoint with jwt
 
-GET {{host}}/scores/admin
+### Categories get
+GET {{host}}/admin/categories
 Authorization: Bearer {{accessToken}}
+### Categories post
+
+POST {{host}}/admin/categories
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+   "name": "LO1"
+}
+
+### Categories delete
+
+DELETE {{host}}/admin/categories/c0b7568e-ff1f-41fe-8082-cb3e41cba446
+Authorization: Bearer {{accessToken}}
+
+
+### Categories update
+PUT {{host}}/admin/categories/6ff9b79b-c119-4374-b259-fc1dd289d3e3
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "xddd"
+}
 
