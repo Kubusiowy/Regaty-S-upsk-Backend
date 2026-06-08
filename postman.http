@@ -9,8 +9,8 @@ POST {{host}}/auth/login
 Content-Type: application/json
 
 {
-  "login": "Firkowski",
-  "rawPassword": "ZAQ!2wsx"
+  "login": "",
+  "rawPassword": ""
 }
 
 > {%
@@ -51,7 +51,7 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-   "name": "LO1"
+   "name": "k2t"
 }
 
 ### Categories delete
@@ -66,6 +66,39 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "name": "xddd"
+  "name": "k1=t"
+}
+
+
+
+
+
+### school get
+GET {{host}}/admin/schools
+Authorization: Bearer {{accessToken}}
+
+### school post
+
+POST {{host}}/admin/schools
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "LO2"
+}
+
+### school delete
+
+DELETE {{host}}/admin/schools/bf15df5e-d6dd-455f-af32-570c5a858843
+Authorization: Bearer {{accessToken}}
+
+
+### school update
+PUT {{host}}/admin/schools/dbc1d0f7-b139-495a-85d4-97431e412bdb
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Rolniczak"
 }
 

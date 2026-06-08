@@ -33,7 +33,7 @@ fun Route.categoryAdminRoutes(categoryService: CategoryService) {
         delete("/{id}") {
             val id = call.parameters["id"] ?: throw BadRequestException("Missing ID")
              categoryService.deleteCategory(UUID.fromString(id))
-            call.respond(HttpStatusCode.OK)
+            call.respond(HttpStatusCode.NoContent)
         }
 
         put("/{id}") {
