@@ -16,7 +16,7 @@ import io.ktor.server.routing.route
 
 fun Route.scoreAdminRoutes(resultService: ResultService) {
 
-    route("/scores/admin") {
+    route("/admin/scores") {
         get{
             call.respond("test udany score admin")
 

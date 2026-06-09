@@ -7,6 +7,7 @@ import com.example.features.categories.service.CategoryService
 import com.example.features.schools.routes.schoolAdminRoutes
 import com.example.features.schools.service.SchoolService
 import com.example.features.scores.routes.scoreAdminRoutes
+import com.example.features.scores.routes.scoreClientRoute
 import com.example.features.scores.service.ResultService
 import io.ktor.server.application.*
 import io.ktor.server.auth.authenticate
@@ -30,6 +31,8 @@ fun Application.configureRouting() {
             categoryAdminRoutes(categoryService)
             schoolAdminRoutes(schoolService)
         }
+
+        scoreClientRoute(resultService)
 
         authRoutes(authService)
 
