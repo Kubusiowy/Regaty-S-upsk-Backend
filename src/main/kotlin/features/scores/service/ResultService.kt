@@ -9,6 +9,6 @@ interface ResultService {
 
     suspend fun createResult(request: CreateResultRequest): ResultResponse
     suspend fun updateResult(resultId: UUID, request: UpdateResultRequest): ResultResponse
-    suspend fun deleteResult(resultId: UUID)
+    suspend fun deleteResult(resultId: UUID): Int
     suspend fun getAllResults(): List<ResultResponse>
 }

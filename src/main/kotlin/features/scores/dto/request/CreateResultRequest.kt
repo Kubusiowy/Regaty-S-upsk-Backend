@@ -7,7 +7,7 @@ import java.util.UUID
 @Serializable
 data class CreateResultRequest(
     @Serializable(with = UUIDSerializer::class)
-    val participantId: UUID,
+    val schoolId: UUID,
     @Serializable(with = UUIDSerializer::class)
     val categoryId: UUID,
     val timeMs: Long
