@@ -13,6 +13,8 @@ interface ResultRepository {
         resultModel: ResultModel,
     ): ResultModel
 
+    suspend fun getBySchoolAndCategory(schoolId:UUID, categoryId:UUID): ResultModel?
+
     suspend fun getAllResults(): List<ResultModel>
     suspend fun getResult(id: UUID): ResultModel?
     suspend fun delete(id: UUID):Int

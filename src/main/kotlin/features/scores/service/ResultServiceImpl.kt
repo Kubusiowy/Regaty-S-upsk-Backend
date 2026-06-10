@@ -1,5 +1,7 @@
 package com.example.features.scores.service
 
+import com.example.features.categories.repository.CategoryRepository
+import com.example.features.schools.repository.SchoolRepository
 import com.example.features.scores.dto.request.CreateResultRequest
 import com.example.features.scores.dto.request.UpdateResultRequest
 import com.example.features.scores.dto.response.ResultResponse
@@ -11,7 +13,9 @@ import io.ktor.server.plugins.NotFoundException
 import java.util.UUID
 
 class ResultServiceImpl(
-    private val resultRepo: ResultRepository
+    private val resultRepo: ResultRepository,
+    private val categoryRepo: CategoryRepository,
+    private val schoolRepo: SchoolRepository
 ) : ResultService {
 
 
@@ -27,7 +31,16 @@ class ResultServiceImpl(
             categoryId = request.categoryId,
             timeMs = request.timeMs,
         )
-        TODO("create validation to existing result")
+
+        categoryRepo.getCategory(resultModel.categoryId) ?: throw NotFoundException("category with ${resultModel.categoryId} not found")
+        schoolRepo.getSchoolById(resultModel.schoolId) ?: throw NotFoundException("school with ${resultModel.schoolId} not found")
+
+        val existingCategory = resultRepo.getBySchoolAndCategory(resultModel.schoolId, resultModel.categoryId)
+
+        if(existingCategory != null) {
+            throw BadRequestException("Result for this school and category already exists")
+        }
+
         val savedResult = resultRepo.createResult(resultModel)
 
         return savedResult.toResultResponse()
@@ -38,7 +51,18 @@ class ResultServiceImpl(
         resultId: UUID,
         request: UpdateResultRequest
     ): ResultResponse {
-        TODO("Not yet implemented")
+        val existedResult = resultRepo.getResult(resultId) ?: throw NotFoundException("result with id $resultId not found")
+
+        val resultModel = ResultModel(
+            id = resultId,
+            schoolId = existedResult.schoolId,
+            categoryId = existedResult.categoryId,
+            timeMs = request.timeMs,
+        )
+
+        val savedResult = resultRepo.updateResult(resultModel)
+        return savedResult.toResultResponse()
+
     }
 
     override suspend fun deleteResult(resultId: UUID): Int {

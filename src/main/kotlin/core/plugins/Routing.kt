@@ -1,5 +1,6 @@
 package com.example.core.plugins
 
+
 import com.example.features.auth.routes.authRoutes
 import com.example.features.auth.service.AuthService
 import com.example.features.categories.routes.categoryAdminRoutes

@@ -3,7 +3,6 @@ package com.example.features.schools.routes
 import com.example.core.plugins.exception.BadRequestException
 import com.example.features.schools.dto.request.SchoolRequest
 import com.example.features.schools.dto.request.UpdateSchoolRequest
-import com.example.features.schools.model.SchoolModel
 import com.example.features.schools.service.SchoolService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive

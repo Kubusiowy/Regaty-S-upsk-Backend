@@ -46,5 +46,13 @@ fun Application.configureStatusPages() {
                 )
             )
         }
+
+        exception<IllegalArgumentException>{call,cause ->
+            call.respond(
+                HttpStatusCode.BadRequest,
+                cause.message ?: "invalid UUID"
+            )
+
+        }
     }
 }

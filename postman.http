@@ -102,3 +102,11 @@ Content-Type: application/json
   "name": "Rolniczak"
 }
 
+
+### get result
+
+GET {{host}}/
+
+
+
+

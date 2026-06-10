@@ -8,5 +8,5 @@ import org.koin.dsl.module
 
 val scoresModule = module {
     single<ResultRepository> { ResultRepositoryImpl() }
-    single<ResultService> { ResultServiceImpl(get()) }
+    single<ResultService> { ResultServiceImpl(get(),get(),get()) }
 }

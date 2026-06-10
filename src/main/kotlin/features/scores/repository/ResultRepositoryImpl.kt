@@ -8,6 +8,7 @@ import com.example.features.scores.dto.response.ResultResponse
 import com.example.features.scores.model.ResultModel
 import com.example.features.scores.repository.mapping.toResultModel
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.javatime.time
@@ -29,6 +30,16 @@ class ResultRepositoryImpl : ResultRepository {
         return resultModel
     }
 
+
+    override suspend fun getBySchoolAndCategory(schoolId: UUID, categoryId: UUID): ResultModel? = dbQuery {
+        Results
+            .selectAll()
+            .where{
+                (Results.schoolId eq schoolId.toString()) and
+                        (Results.categoryId eq categoryId.toString())
+            }
+            .singleOrNull()?.toResultModel()
+    }
     override suspend fun updateResult(
         resultModel: ResultModel,
     ): ResultModel = dbQuery {
