@@ -42,9 +42,7 @@ class DatabaseFactory(
         Flyway.configure(this::class.java.classLoader)
             .dataSource(dataSource)
             .locations("classpath:db/migration")
-            .sqlMigrationPrefix("V")
-            .sqlMigrationSeparator("__")
-            .sqlMigrationSuffixes(".sql")
+            .validateMigrationNaming(true)
             .load()
             .migrate()
 
