@@ -70,9 +70,9 @@ function formatTime(ms) {
 
     const minutes = Math.floor(totalMs / 60000);
     const seconds = Math.floor((totalMs % 60000) / 1000);
-    const milliseconds = totalMs % 1000;
+    const milliseconds = String(Math.floor((totalMs % 1000) / 10)).padStart(2, "0");
 
-    return `${minutes} min ${seconds} s ${milliseconds} ms`;
+    return `${minutes} min ${seconds} s ${milliseconds} mil`;
 }
 
 const chartValueLabelPlugin = {
@@ -466,7 +466,7 @@ function splitTimeMs(timeMs) {
     return {
         minutes: Math.floor(timeMs / 60000),
         seconds: Math.floor((timeMs % 60000) / 1000),
-        milliseconds: timeMs % 1000
+        milliseconds: String(Math.floor((timeMs % 1000) / 10)).padStart(2, "0")
     };
 }
 
@@ -607,12 +607,12 @@ function renderAdminScoresTable() {
                             >
                         </label>
                         <label class="time-part">
-                            <span>ms</span>
+                            <span>mil</span>
                             <input
                                 class="time-part-input"
                                 type="number"
                                 min="0"
-                                max="999"
+                                max="99"
                                 step="1"
                                 inputmode="numeric"
                                 value="${time.milliseconds}"
@@ -643,6 +643,11 @@ function renderAdminScoresTable() {
 
 function markScoreDirty(event) {
     const input = event.target;
+
+    if (input.dataset.timePart === "milliseconds") {
+        input.value = input.value.replace(/\D/g, "").slice(0, 2);
+    }
+
     const group = input.closest(".time-input-group");
 
     if (!group) return;
@@ -681,10 +686,10 @@ function validateScoreChanges() {
 
         const minutes = parseTimePart(change.minutes, "minuty");
         const seconds = parseTimePart(change.seconds, "sekundy", 59);
-        const milliseconds = parseTimePart(change.milliseconds, "milisekundy", 999);
+        const milliseconds = parseTimePart(change.milliseconds, "milisekundy", 99);
 
         change.isEmpty = false;
-        change.timeMs = minutes * 60000 + seconds * 1000 + milliseconds;
+        change.timeMs = minutes * 60000 + seconds * 1000 + milliseconds * 10;
     });
 
     return changes;
