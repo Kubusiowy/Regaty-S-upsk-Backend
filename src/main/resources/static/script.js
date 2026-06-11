@@ -132,12 +132,14 @@ function getChartOptions() {
         },
         scales: {
             x: {
+                display: false,
                 beginAtZero: true,
                 title: {
-                    display: true,
+                    display: false,
                     text: "Czas"
                 },
                 ticks: {
+                    display: false,
                     autoSkip: true,
                     maxTicksLimit: mobile ? 3 : 6,
                     callback: value => formatTime(value)
@@ -153,6 +155,19 @@ function getChartOptions() {
             }
         }
     };
+}
+
+function getRandomChartColors(count) {
+    const startHue = Math.floor(Math.random() * 360);
+
+    return Array.from({ length: count }, (_, index) => {
+        const hue = Math.round((startHue + index * 137.508) % 360);
+
+        return {
+            background: `hsl(${hue}, 72%, 54%)`,
+            border: `hsl(${hue}, 72%, 38%)`
+        };
+    });
 }
 
 function showError(message) {
@@ -368,6 +383,7 @@ function renderChart(schoolsRanking) {
     const ctx = document.getElementById("rankingChart");
     const labels = schoolsRanking.map(school => school.schoolName);
     const values = schoolsRanking.map(school => school.totalTimeMs);
+    const colors = getRandomChartColors(values.length);
     const nextSignature = JSON.stringify({ labels, values });
 
     if (chart && chartSignature === nextSignature) {
@@ -379,6 +395,8 @@ function renderChart(schoolsRanking) {
     if (chart) {
         chart.data.labels = labels;
         chart.data.datasets[0].data = values;
+        chart.data.datasets[0].backgroundColor = colors.map(color => color.background);
+        chart.data.datasets[0].borderColor = colors.map(color => color.border);
         chart.options = getChartOptions();
         chartSignature = nextSignature;
         chart.update("none");
@@ -393,6 +411,8 @@ function renderChart(schoolsRanking) {
                 {
                     label: "Suma czasu",
                     data: values,
+                    backgroundColor: colors.map(color => color.background),
+                    borderColor: colors.map(color => color.border),
                     borderWidth: 1
                 }
             ]
