@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN gradle clean build -x test --no-daemon
+RUN gradle clean shadowJar -x test --no-daemon
 
 FROM eclipse-temurin:21-jre
 
