@@ -26,14 +26,30 @@ const refreshAdminBtn = document.getElementById("refreshAdminBtn");
 const saveScoresBtn = document.getElementById("saveScoresBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 
-const CATEGORIES_URL = "/client/categories";
-const SCHOOLS_URL = "/client/schools";
-const SCORES_URL = "/client/scores";
-const AUTH_LOGIN_URL = "/auth/login";
-const AUTH_REFRESH_URL = "/auth/refresh";
-const ADMIN_CATEGORIES_URL = "/admin/categories";
-const ADMIN_SCHOOLS_URL = "/admin/schools";
-const ADMIN_SCORES_URL = "/admin/scores";
+const API_BASE_URL = window.location.protocol === "file:" ? "http://localhost:8080" : "";
+
+function apiPath(path) {
+    return `${API_BASE_URL}${path}`;
+}
+
+const API = {
+    auth: {
+        login: apiPath("/auth/login"),
+        refresh: apiPath("/auth/refresh")
+    },
+    client: {
+        categories: apiPath("/client/categories"),
+        schools: apiPath("/client/schools"),
+        scores: apiPath("/client/scores"),
+        ranking: apiPath("/client/scores/ranking")
+    },
+    admin: {
+        categories: apiPath("/admin/categories"),
+        schools: apiPath("/admin/schools"),
+        scores: apiPath("/admin/scores"),
+        scoreAdd: apiPath("/admin/scores/add")
+    }
+};
 
 const ACCESS_TOKEN_STORAGE_KEY = "regatyAdminAccessToken";
 const REFRESH_TOKEN_STORAGE_KEY = "regatyAdminRefreshToken";
@@ -301,7 +317,7 @@ async function requestJson(url, options = {}) {
     return responseBody;
 }
 
-function buildTableData(categories, schools, scores) {
+function buildTableData(categories, schools, scores, ranking = []) {
     const schoolRows = schools.map(school => ({
         schoolId: school.id,
         schoolName: school.name,
@@ -322,7 +338,28 @@ function buildTableData(categories, schools, scores) {
         school.totalTimeMs += score.timeMs;
     });
 
-    return schoolRows.sort((a, b) => a.totalTimeMs - b.totalTimeMs);
+    ranking.forEach(item => {
+        const school = schoolMap.get(item.schoolId);
+
+        if (school) {
+            school.totalTimeMs = item.totalTimeMs;
+        }
+    });
+
+    const rankingOrder = new Map(
+        ranking.map(item => [item.schoolId, item.place])
+    );
+
+    return schoolRows.sort((a, b) => {
+        const placeA = rankingOrder.get(a.schoolId);
+        const placeB = rankingOrder.get(b.schoolId);
+
+        if (placeA !== undefined && placeB !== undefined) return placeA - placeB;
+        if (placeA !== undefined) return -1;
+        if (placeB !== undefined) return 1;
+
+        return a.totalTimeMs - b.totalTimeMs;
+    });
 }
 
 function renderResultsTable(categories, schoolsRanking) {
@@ -428,13 +465,14 @@ async function loadResults() {
     try {
         hideError();
 
-        const [categories, schools, scores] = await Promise.all([
-            fetchJson(CATEGORIES_URL),
-            fetchJson(SCHOOLS_URL),
-            fetchJson(SCORES_URL)
+        const [categories, schools, scores, ranking] = await Promise.all([
+            fetchJson(API.client.categories),
+            fetchJson(API.client.schools),
+            fetchJson(API.client.scores),
+            fetchJson(API.client.ranking)
         ]);
 
-        const schoolsRanking = buildTableData(categories, schools, scores);
+        const schoolsRanking = buildTableData(categories, schools, scores, ranking);
 
         renderResultsTable(categories, schoolsRanking);
         renderChart(schoolsRanking);
@@ -732,7 +770,7 @@ async function saveScoreChanges() {
         for (const change of changes) {
             if (change.isEmpty) {
                 if (change.scoreId) {
-                    await requestJson(`${ADMIN_SCORES_URL}/${change.scoreId}`, {
+                    await requestJson(`${API.admin.scores}/${change.scoreId}`, {
                         method: "DELETE",
                         auth: true
                     });
@@ -742,7 +780,7 @@ async function saveScoreChanges() {
             }
 
             if (change.scoreId) {
-                await requestJson(`${ADMIN_SCORES_URL}/${change.scoreId}`, {
+                await requestJson(`${API.admin.scores}/${change.scoreId}`, {
                     method: "PUT",
                     auth: true,
                     body: {
@@ -750,7 +788,7 @@ async function saveScoreChanges() {
                     }
                 });
             } else {
-                await requestJson(`${ADMIN_SCORES_URL}/add`, {
+                await requestJson(API.admin.scoreAdd, {
                     method: "POST",
                     auth: true,
                     body: {
@@ -777,9 +815,9 @@ async function saveScoreChanges() {
 
 async function loadAdminData() {
     const [categories, schools, scores] = await Promise.all([
-        fetchJson(CATEGORIES_URL),
-        fetchJson(SCHOOLS_URL),
-        fetchJson(SCORES_URL)
+        fetchJson(API.client.categories),
+        fetchJson(API.client.schools),
+        fetchJson(API.client.scores)
     ]);
 
     adminState.categories = categories;
@@ -824,7 +862,7 @@ async function refreshAccessToken(showMessage = true) {
         throw new Error("Brak refresh tokena. Zaloguj się ponownie.");
     }
 
-    const result = await requestJson(AUTH_REFRESH_URL, {
+    const result = await requestJson(API.auth.refresh, {
         method: "POST",
         retryAuth: false,
         body: {
@@ -881,7 +919,7 @@ async function handleLogin(event) {
     setButtonLoading(loginForm.querySelector("button"), true, "Loguję...");
 
     try {
-        const result = await requestJson(AUTH_LOGIN_URL, {
+        const result = await requestJson(API.auth.login, {
             method: "POST",
             retryAuth: false,
             body: {
@@ -916,7 +954,7 @@ async function handleCreateCategory(event) {
     setButtonLoading(button, true, "Dodaję...");
 
     try {
-        await requestJson(ADMIN_CATEGORIES_URL, {
+        await requestJson(API.admin.categories, {
             method: "POST",
             auth: true,
             body: { name }
@@ -944,7 +982,7 @@ async function handleCreateSchool(event) {
     setButtonLoading(button, true, "Dodaję...");
 
     try {
-        await requestJson(ADMIN_SCHOOLS_URL, {
+        await requestJson(API.admin.schools, {
             method: "POST",
             auth: true,
             body: { name }
@@ -966,7 +1004,7 @@ async function deleteRelatedScores(predicate) {
     const scoresToDelete = adminState.scores.filter(predicate);
 
     for (const score of scoresToDelete) {
-        await requestJson(`${ADMIN_SCORES_URL}/${score.id}`, {
+        await requestJson(`${API.admin.scores}/${score.id}`, {
             method: "DELETE",
             auth: true
         });
@@ -986,7 +1024,7 @@ async function deleteCategory(categoryId) {
     try {
         const deletedScores = await deleteRelatedScores(score => score.categoryId === categoryId);
 
-        await requestJson(`${ADMIN_CATEGORIES_URL}/${categoryId}`, {
+        await requestJson(`${API.admin.categories}/${categoryId}`, {
             method: "DELETE",
             auth: true
         });
@@ -1011,7 +1049,7 @@ async function deleteSchool(schoolId) {
     try {
         const deletedScores = await deleteRelatedScores(score => score.schoolId === schoolId);
 
-        await requestJson(`${ADMIN_SCHOOLS_URL}/${schoolId}`, {
+        await requestJson(`${API.admin.schools}/${schoolId}`, {
             method: "DELETE",
             auth: true
         });
