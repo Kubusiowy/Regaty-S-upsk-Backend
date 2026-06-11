@@ -19,10 +19,7 @@ fun Route.categoryAdminRoutes(categoryService: CategoryService) {
 
     route("/admin/categories") {
 
-        get{
-            val categories = categoryService.getCategories()
-            call.respond(HttpStatusCode.OK,categories)
-        }
+
 
         post {
             val req = call.receive<CreateCategoryRequest>()

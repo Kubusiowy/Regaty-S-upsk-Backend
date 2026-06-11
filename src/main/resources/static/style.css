@@ -1,0 +1,464 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fff;
+    color: #111;
+    overflow-x: hidden;
+}
+
+.page {
+    width: min(100%, 900px);
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 24px 14px;
+}
+
+.header {
+    margin-bottom: 20px;
+}
+
+.header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.eyebrow {
+    margin: 0 0 6px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #555;
+}
+
+h1 {
+    margin: 0;
+    font-size: 34px;
+}
+
+.subtitle {
+    margin: 8px 0 0;
+    color: #555;
+}
+
+.toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+button {
+    border: 1px solid #111;
+    background: white;
+    color: #111;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+button.active {
+    background: #111;
+    color: white;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.panel-button {
+    flex: 0 0 auto;
+    padding: 8px 14px;
+}
+
+.secondary-button {
+    background: #fff;
+}
+
+.attention {
+    background: #111;
+    color: white;
+}
+
+.card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    font-size: 13px;
+    color: #555;
+    background: #fff;
+}
+
+td:first-child {
+    font-weight: 700;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+#chartView {
+    padding: 16px;
+}
+
+canvas {
+    width: 100%;
+    min-height: 360px;
+}
+
+.hidden {
+    display: none;
+}
+
+.error {
+    margin-top: 14px;
+    padding: 12px;
+    border: 1px solid #111;
+    background: white;
+}
+
+.admin-panel {
+    margin: 0 0 18px;
+    padding: 16px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-width: 100%;
+}
+
+.admin-panel-header,
+.admin-topbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.admin-panel h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.admin-card {
+    margin-top: 14px;
+    padding: 14px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.login-form,
+.stack-form {
+    display: grid;
+    gap: 10px;
+}
+
+.login-form {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: end;
+}
+
+.admin-forms {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 14px 0;
+}
+
+.admin-form {
+    padding: 14px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.admin-list {
+    margin-top: 12px;
+    border-top: 1px solid #eee;
+    padding-top: 8px;
+}
+
+.admin-list ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-list li:last-child {
+    border-bottom: none;
+}
+
+.admin-list span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.list-empty {
+    margin: 0;
+    padding: 8px 0;
+    color: #555;
+}
+
+.danger-button {
+    flex: 0 0 auto;
+    border-color: #777;
+    color: #111;
+    background: #fff;
+}
+
+label {
+    display: grid;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    padding: 10px 12px;
+    font: inherit;
+    color: #111;
+    background: white;
+}
+
+input:focus {
+    outline: 2px solid #111;
+    outline-offset: 1px;
+}
+
+.admin-status {
+    margin: 8px 0 0;
+    color: #555;
+}
+
+.admin-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.admin-table-card {
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+#adminScoresTable {
+    min-width: 980px;
+}
+
+.time-cell {
+    min-width: 190px;
+}
+
+.time-input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    min-width: 170px;
+}
+
+.time-input-group.dirty input {
+    border-color: #111;
+    background: #f7f7f7;
+}
+
+.time-part {
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #777;
+}
+
+.time-part input {
+    padding: 8px 6px;
+    text-align: right;
+}
+
+.empty-cell {
+    white-space: normal;
+    color: #555;
+}
+
+.message {
+    margin: 14px 0 0;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.message.success {
+    border-color: #333;
+    background: #fff;
+}
+
+.message.error {
+    border-color: #111;
+    background: #fff;
+}
+
+@media (max-width: 600px) {
+    .page {
+        padding: 18px 10px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    th, td {
+        padding: 12px 10px;
+        font-size: 14px;
+    }
+
+    .toolbar {
+        width: 100%;
+    }
+
+    button {
+        flex: 1;
+    }
+
+    .header-row,
+    .admin-panel-header,
+    .admin-topbar {
+        flex-direction: column;
+    }
+
+    .panel-button {
+        width: 100%;
+    }
+
+    .login-form,
+    .admin-forms {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-buttons {
+        width: 100%;
+    }
+
+    .admin-panel {
+        padding: 12px;
+    }
+
+    .admin-card,
+    .admin-form {
+        padding: 12px;
+    }
+
+    #chartView {
+        padding: 10px;
+    }
+
+    canvas {
+        min-height: 300px;
+    }
+}
+
+
+.table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+}
+
+#resultsTable {
+    min-width: 700px;
+}
+
+.school-name {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.total-time {
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+td, th {
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .table-card {
+        border-radius: 4px;
+    }
+
+    #resultsTable {
+        min-width: 760px;
+    }
+
+    #adminScoresTable {
+        min-width: 900px;
+    }
+
+    .time-cell {
+        min-width: 165px;
+    }
+
+    .time-input-group {
+        min-width: 150px;
+        gap: 4px;
+    }
+
+    th, td {
+        font-size: 13px;
+        padding: 9px;
+    }
+
+    .time-part input {
+        padding: 7px 4px;
+    }
+
+    .admin-list li {
+        align-items: flex-start;
+    }
+}

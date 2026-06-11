@@ -2,16 +2,115 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wyniki szkół</title>
     <link rel="stylesheet" href="style.css">
-    <title>Regaty Słupsk</title>
 </head>
 <body>
 
+<main class="page">
+    <header class="header">
+        <div class="header-row">
+            <div>
+                <p class="eyebrow">Regaty Słupsk</p>
+                <h1>Wyniki szkół</h1>
+                <p class="subtitle">Tabela wyników z podziałem na kategorie i sumą czasów.</p>
+            </div>
 
+            <button id="adminOpenBtn" class="panel-button" type="button">Panel</button>
+        </div>
+    </header>
 
+    <section class="toolbar">
+        <button id="tableBtn" class="active" type="button">Tabela</button>
+        <button id="chartBtn" type="button">Wykres</button>
+    </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
+    <section id="adminPanel" class="admin-panel hidden" aria-label="Panel admina">
+        <div class="admin-panel-header">
+            <div>
+                <p class="eyebrow">Panel admina</p>
+                <h2>Dodawanie szkół, kategorii i wyników</h2>
+            </div>
+            <button id="adminCloseBtn" class="secondary-button" type="button">Zamknij</button>
+        </div>
+
+        <section id="loginView" class="admin-card">
+            <form id="loginForm" class="login-form">
+                <label>
+                    Login
+                    <input id="loginInput" name="login" type="text" autocomplete="off" value="" required>
+                </label>
+
+                <label>
+                    Hasło
+                    <input id="passwordInput" name="password" type="password" autocomplete="new-password" value="" required>
+                </label>
+
+                <button type="submit">Zaloguj</button>
+            </form>
+        </section>
+
+        <section id="adminView" class="hidden">
+            <div class="admin-topbar">
+                <p id="adminStatus" class="admin-status">Zalogowano.</p>
+                <div class="admin-buttons">
+                    <button id="refreshAdminBtn" class="secondary-button" type="button">Odśwież</button>
+                    <button id="saveScoresBtn" type="button">Zapisz wyniki</button>
+                    <button id="logoutBtn" class="secondary-button" type="button">Wyloguj</button>
+                </div>
+            </div>
+
+            <div class="admin-forms">
+                <section class="admin-form">
+                    <form id="categoryForm" class="stack-form">
+                        <label>
+                            Nowa kategoria
+                            <input id="categoryNameInput" name="categoryName" type="text" maxlength="100" required>
+                        </label>
+                        <button type="submit">Dodaj kategorię</button>
+                    </form>
+
+                    <div id="categoryList" class="admin-list" aria-label="Lista kategorii"></div>
+                </section>
+
+                <section class="admin-form">
+                    <form id="schoolForm" class="stack-form">
+                        <label>
+                            Nowa szkoła
+                            <input id="schoolNameInput" name="schoolName" type="text" maxlength="100" required>
+                        </label>
+                        <button type="submit">Dodaj szkołę</button>
+                    </form>
+
+                    <div id="schoolList" class="admin-list" aria-label="Lista szkół"></div>
+                </section>
+            </div>
+
+            <section class="card admin-table-card">
+                <div class="table-wrapper">
+                    <table id="adminScoresTable"></table>
+                </div>
+            </section>
+        </section>
+
+        <p id="adminMessage" class="message hidden" aria-live="polite"></p>
+    </section>
+
+    <section id="tableView" class="card table-card">
+        <div class="table-wrapper">
+            <table id="resultsTable"></table>
+        </div>
+    </section>
+
+    <section id="chartView" class="card hidden">
+        <canvas id="rankingChart"></canvas>
+    </section>
+
+    <p id="errorBox" class="error hidden"></p>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

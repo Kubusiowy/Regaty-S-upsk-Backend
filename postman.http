@@ -1,112 +1,304 @@
 @host = http://localhost:8080
+@adminLogin = Firkowski
+@adminPassword = ZAQ!2wsx
 
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+@categoryName = Test HTTP Category
+@categoryUpdatedName = Test HTTP Category Updated
+@schoolName = Test HTTP School
+@schoolUpdatedName = Test HTTP School Updated
+@resultTimeMs = 123456
+@resultUpdatedTimeMs = 120000
 
-### Login admina
+### Static index: GET /
+GET {{host}}/
+
+> {%
+    client.test("GET / returns 200", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+%}
+
+### Static index file: GET /index.html
+GET {{host}}/index.html
+
+> {%
+    client.test("GET /index.html returns 200", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+%}
+
+### Static CSS: GET /style.css
+GET {{host}}/style.css
+
+> {%
+    client.test("GET /style.css returns 200", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+%}
+
+### Static JS: GET /script.js
+GET {{host}}/script.js
+
+> {%
+    client.test("GET /script.js returns 200", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+%}
+
+### Public categories list: GET /client/categories
+GET {{host}}/client/categories
+Accept: application/json
+
+> {%
+    client.test("GET /client/categories returns 200", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+%}
+
+### Public schools list: GET /client/schools
+GET {{host}}/client/schools
+Accept: application/json
+
+> {%
+    client.test("GET /client/schools returns 200", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+%}
+
+### Public scores list: GET /client/scores
+GET {{host}}/client/scores
+Accept: application/json
+
+> {%
+    client.test("GET /client/scores returns 200", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+%}
+
+### Public scores ranking: GET /client/scores/ranking
+GET {{host}}/client/scores/ranking
+Accept: application/json
+
+> {%
+    client.test("GET /client/scores/ranking returns 200", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+%}
+
+### Auth login: POST /auth/login
 POST {{host}}/auth/login
 Content-Type: application/json
+Accept: application/json
 
 {
-  "login": "",
-  "rawPassword": ""
+  "login": "{{adminLogin}}",
+  "rawPassword": "{{adminPassword}}"
 }
 
 > {%
-    client.global.set(
-        "accessToken",
-        response.body.accessToken
-    )
+    client.test("POST /auth/login returns 200 and tokens", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+        client.assert(response.body.accessToken, "Missing accessToken");
+    });
 
-    client.global.set(
-        "refreshToken",
-        response.body.refreshToken
-    )
+    client.global.set("accessToken", response.body.accessToken);
+    client.global.set("refreshToken", response.body.refreshToken);
 %}
 
-### Refresh access tokena
+### Auth refresh: POST /auth/refresh
 POST {{host}}/auth/refresh
 Content-Type: application/json
+Accept: application/json
 
 {
   "refreshToken": "{{refreshToken}}"
 }
 
 > {%
-    client.global.set(
-        "accessToken",
-        response.body.accessToken
-    )
- %}
+    client.test("POST /auth/refresh returns 200 and access token", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+        client.assert(response.body.accessToken, "Missing accessToken");
+    });
 
+    client.global.set("accessToken", response.body.accessToken);
+%}
 
-### Categories get
-GET {{host}}/admin/categories
-Authorization: Bearer {{accessToken}}
-### Categories post
-
+### Admin create category: POST /admin/categories
 POST {{host}}/admin/categories
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
+Accept: application/json
 
 {
-   "name": "k2t"
+  "name": "{{categoryName}}"
 }
 
-### Categories delete
+> {%
+    client.test("POST /admin/categories returns 201 and id", function() {
+        client.assert(response.status === 201, "Expected 201 Created");
+        client.assert(response.body.id, "Missing category id");
+    });
 
-DELETE {{host}}/admin/categories/c0b7568e-ff1f-41fe-8082-cb3e41cba446
-Authorization: Bearer {{accessToken}}
+    client.global.set("categoryId", response.body.id);
+%}
 
-
-### Categories update
-PUT {{host}}/admin/categories/6ff9b79b-c119-4374-b259-fc1dd289d3e3
+### Admin update category: PUT /admin/categories/{id}
+PUT {{host}}/admin/categories/{{categoryId}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
+Accept: application/json
 
 {
-  "name": "k1=t"
+  "name": "{{categoryUpdatedName}}"
 }
 
+> {%
+    client.test("PUT /admin/categories/{id} returns 200", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+        client.assert(response.body.id === client.global.get("categoryId"), "Updated category id mismatch");
+    });
+%}
 
-
-
-
-### school get
-GET {{host}}/admin/schools
-Authorization: Bearer {{accessToken}}
-
-### school post
-
+### Admin create school: POST /admin/schools
 POST {{host}}/admin/schools
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
+Accept: application/json
 
 {
-  "name": "LO2"
+  "name": "{{schoolName}}"
 }
 
-### school delete
+> {%
+    client.test("POST /admin/schools returns 201 and id", function() {
+        client.assert(response.status === 201, "Expected 201 Created");
+        client.assert(response.body.id, "Missing school id");
+    });
 
-DELETE {{host}}/admin/schools/bf15df5e-d6dd-455f-af32-570c5a858843
-Authorization: Bearer {{accessToken}}
+    client.global.set("schoolId", response.body.id);
+%}
 
-
-### school update
-PUT {{host}}/admin/schools/dbc1d0f7-b139-495a-85d4-97431e412bdb
+### Admin update school: PUT /admin/schools/{id}
+PUT {{host}}/admin/schools/{{schoolId}}
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
+Accept: application/json
 
 {
-  "name": "Rolniczak"
+  "name": "{{schoolUpdatedName}}"
 }
 
+> {%
+    client.test("PUT /admin/schools/{id} returns 200", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+        client.assert(response.body.id === client.global.get("schoolId"), "Updated school id mismatch");
+    });
+%}
 
-### get result
+### Admin create score: POST /admin/scores/add
+POST {{host}}/admin/scores/add
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+Accept: application/json
 
-GET {{host}}/
+{
+  "schoolId": "{{schoolId}}",
+  "categoryId": "{{categoryId}}",
+  "timeMs": {{resultTimeMs}}
+}
 
+> {%
+    client.test("POST /admin/scores/add returns 200 and id", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+        client.assert(response.body.id, "Missing result id");
+    });
 
+    client.global.set("resultId", response.body.id);
+%}
+
+### Public scores list after create: GET /client/scores
+GET {{host}}/client/scores
+Accept: application/json
+
+> {%
+    client.test("GET /client/scores after create returns 200", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+%}
+
+### Public ranking after create: GET /client/scores/ranking
+GET {{host}}/client/scores/ranking
+Accept: application/json
+
+> {%
+    client.test("GET /client/scores/ranking after create returns 200", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+    });
+%}
+
+### Admin update score: PUT /admin/scores/{resultId}
+PUT {{host}}/admin/scores/{{resultId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "timeMs": {{resultUpdatedTimeMs}}
+}
+
+> {%
+    client.test("PUT /admin/scores/{resultId} returns 200", function() {
+        client.assert(response.status === 200, "Expected 200 OK");
+        client.assert(response.body.id === client.global.get("resultId"), "Updated result id mismatch");
+    });
+%}
+
+### Admin delete score: DELETE /admin/scores/{resultId}
+DELETE {{host}}/admin/scores/{{resultId}}
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+> {%
+    client.test("DELETE /admin/scores/{resultId} returns 204", function() {
+        client.assert(response.status === 204, "Expected 204 No Content");
+    });
+%}
+
+### Admin delete school: DELETE /admin/schools/{id}
+DELETE {{host}}/admin/schools/{{schoolId}}
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+> {%
+    client.test("DELETE /admin/schools/{id} returns 204", function() {
+        client.assert(response.status === 204, "Expected 204 No Content");
+    });
+%}
+
+### Admin delete category: DELETE /admin/categories/{id}
+DELETE {{host}}/admin/categories/{{categoryId}}
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+> {%
+    client.test("DELETE /admin/categories/{id} returns 204", function() {
+        client.assert(response.status === 204, "Expected 204 No Content");
+    });
+%}
+
+### Unauthorized admin check: GET-like protected route is not defined, POST without token should return 401
+POST {{host}}/admin/categories
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Unauthorized category"
+}
+
+> {%
+    client.test("POST /admin/categories without token returns 401", function() {
+        client.assert(response.status === 401, "Expected 401 Unauthorized");
+    });
+%}
 
 

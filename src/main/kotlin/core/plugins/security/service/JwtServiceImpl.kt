@@ -1,4 +1,4 @@
-package com.example.core.plugins.security
+package com.example.core.plugins.security.service
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
@@ -29,7 +29,7 @@ class JwtServiceImpl(
             .withExpiresAt(Instant.now().plus(7, ChronoUnit.DAYS))
             .sign(algorithm)
     }
-    override fun verifyRefreshToken(token: String): DecodedJWT{
+    override fun verifyRefreshToken(token: String): DecodedJWT {
         val decoded = verifier.verify(token)
 
         val type = decoded.getClaim("type").asString()

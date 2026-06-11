@@ -19,10 +19,7 @@ fun Route.schoolAdminRoutes(schoolService: SchoolService) {
 
     route("/admin/schools") {
 
-        get {
-            val schools = schoolService.getAllSchools()
-            call.respond(HttpStatusCode.OK,schools)
-        }
+
 
         post {
             val req = call.receive<SchoolRequest>()

@@ -4,6 +4,7 @@ import com.example.features.categories.repository.CategoryRepository
 import com.example.features.schools.repository.SchoolRepository
 import com.example.features.scores.dto.request.CreateResultRequest
 import com.example.features.scores.dto.request.UpdateResultRequest
+import com.example.features.scores.dto.response.ResultRankingResponse
 import com.example.features.scores.dto.response.ResultResponse
 import com.example.features.scores.model.ResultModel
 import com.example.features.scores.repository.ResultRepository
@@ -75,6 +76,8 @@ class ResultServiceImpl(
     }
 
     override suspend fun getAllResults(): List<ResultResponse> = resultRepo.getAllResults().map { it.toResultResponse() }
+
+    override suspend fun getResultRanking(): List<ResultRankingResponse>  = resultRepo.getRanking()
 
 
 }

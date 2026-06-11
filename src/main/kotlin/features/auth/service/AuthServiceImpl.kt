@@ -1,7 +1,7 @@
 package com.example.features.auth.service
 
 import com.example.core.plugins.exception.UnauthorizedException
-import com.example.core.plugins.security.JwtService
+import com.example.core.plugins.security.service.JwtService
 import com.example.core.util.hashing.PassHasher
 import com.example.core.util.sha.sha256
 import com.example.features.auth.domain.DTO.Request.AdminLoginRequest

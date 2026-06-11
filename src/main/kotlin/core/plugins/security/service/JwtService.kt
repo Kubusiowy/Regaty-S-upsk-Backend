@@ -1,4 +1,4 @@
-package com.example.core.plugins.security
+package com.example.core.plugins.security.service
 
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.interfaces.DecodedJWT
@@ -9,4 +9,3 @@ interface JwtService {
     fun generateAccessToken(userId: String):String
     val verifier: JWTVerifier
 }
-

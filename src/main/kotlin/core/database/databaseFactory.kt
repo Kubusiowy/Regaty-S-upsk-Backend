@@ -39,9 +39,10 @@ class DatabaseFactory(
 
         dataSource = HikariDataSource(hikariConfig)
 
-        Flyway.configure()
+        Flyway.configure(this::class.java.classLoader)
             .dataSource(dataSource)
             .locations("classpath:db/migration")
+            .validateMigrationNaming(true)
             .load()
             .migrate()
 
