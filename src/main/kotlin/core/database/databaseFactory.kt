@@ -45,16 +45,16 @@ class DatabaseFactory(
 
         dataSource = HikariDataSource(hikariConfig)
 
-     Flyway.configure()
+/*     Flyway.configure()
            .dataSource(dataSource)
             .locations("classpath:db/migration")
-            .validateMigrationNaming(false)
+            .validateMigrationNaming(true)
             .load()
-            .migrate()
+            .migrate()*/
 
         Database.connect(dataSource)
 
-/*        transaction {
+       transaction {
             SchemaUtils.createMissingTablesAndColumns(
                 Admin,
                 RefreshToken,
@@ -62,7 +62,7 @@ class DatabaseFactory(
                 Schools,
                 Results
             )
-        }*/
+        }
 
 
 
