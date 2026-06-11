@@ -1,5 +1,10 @@
 package com.example.core.database
 
+import com.example.core.database.tables.Admin
+import com.example.core.database.tables.Categories
+import com.example.core.database.tables.RefreshToken
+import com.example.core.database.tables.Results
+import com.example.core.database.tables.Schools
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.config.ApplicationConfig
@@ -7,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import javax.sql.DataSource
 
@@ -39,14 +45,26 @@ class DatabaseFactory(
 
         dataSource = HikariDataSource(hikariConfig)
 
-        Flyway.configure(this::class.java.classLoader)
-            .dataSource(dataSource)
-            .locations("classpath:db/migration")
-            .validateMigrationNaming(true)
-            .load()
-            .migrate()
+   //     Flyway.configure()
+     //       .dataSource(dataSource)
+       //     .locations("classpath:db/migration")
+         //   .validateMigrationNaming(false)
+           // .load()
+            //.migrate()
 
         Database.connect(dataSource)
+
+        transaction {
+            SchemaUtils.createMissingTablesAndColumns(
+                Admin,
+                RefreshToken,
+                Categories,
+                Schools,
+                Results
+            )
+        }
+
+
 
     }
 
