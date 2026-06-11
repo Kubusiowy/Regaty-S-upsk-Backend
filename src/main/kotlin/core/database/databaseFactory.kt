@@ -45,7 +45,6 @@ class DatabaseFactory(
             .sqlMigrationPrefix("V")
             .sqlMigrationSeparator("__")
             .sqlMigrationSuffixes(".sql")
-            .validateMigrationNaming(true)
             .load()
             .migrate()
 
