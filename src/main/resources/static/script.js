@@ -26,7 +26,19 @@ const refreshAdminBtn = document.getElementById("refreshAdminBtn");
 const saveScoresBtn = document.getElementById("saveScoresBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 
-const API_BASE_URL = window.location.protocol === "file:" ? "http://localhost:8080" : "";
+function getApiBaseUrl() {
+    const localHosts = ["localhost", "127.0.0.1", ""];
+    const isLocalFrontend = window.location.protocol === "file:"
+        || localHosts.includes(window.location.hostname);
+
+    if (isLocalFrontend && window.location.port !== "8080") {
+        return "http://localhost:8080";
+    }
+
+    return "";
+}
+
+const API_BASE_URL = getApiBaseUrl();
 
 function apiPath(path) {
     return `${API_BASE_URL}${path}`;
