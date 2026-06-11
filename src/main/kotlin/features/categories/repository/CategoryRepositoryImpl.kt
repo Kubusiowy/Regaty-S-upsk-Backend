@@ -7,6 +7,7 @@ import com.example.core.database.tables.Categories.name
 import com.example.features.categories.model.CategoryModel
 import com.example.features.categories.repository.mappers.toCategoryModel
 import io.ktor.server.plugins.NotFoundException
+import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
@@ -42,6 +43,7 @@ class CategoryRepositoryImpl : CategoryRepository {
         return dbQuery {
             Categories
                 .selectAll()
+                .orderBy(Categories.createdAt to SortOrder.ASC)
                 .map { it.toCategoryModel() }
         }
     }
